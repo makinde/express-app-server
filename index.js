@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+require('engine-strict').check(); // Check node version ASAP
+require('dotenv').load(); // and get the environment set up
+
 const logger = require('morgan');
 const forceSSL = require('express-force-ssl');
 const http = require('http');
