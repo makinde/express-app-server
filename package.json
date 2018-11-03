@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "A script to serve an express app",
   "bin": {
-    "express-app-runner": "index.js"
+    "express-app-server": "index.js"
   },
   "repository": {
     "type": "git",
