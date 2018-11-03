@@ -1,7 +1,7 @@
 {
-  "name": "express-app-runner",
+  "name": "express-app-server",
   "version": "1.0.0",
-  "description": "A script to start an express app",
+  "description": "A script to serve an express app",
   "bin": {
     "express-app-runner": "index.js"
   },
@@ -12,7 +12,7 @@
   "keywords": [
     "express",
     "start",
-    "app"
+    "server"
   ],
   "author": "Makinde Adeagbo",
   "license": "MIT",
