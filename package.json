@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/makinde/express-app-runner.git"
+    "url": "git+https://github.com/makinde/express-app-server.git"
   },
   "keywords": [
     "express",
@@ -17,9 +17,9 @@
   "author": "Makinde Adeagbo",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/makinde/express-app-runner/issues"
+    "url": "https://github.com/makinde/express-app-server/issues"
   },
-  "homepage": "https://github.com/makinde/express-app-runner#readme",
+  "homepage": "https://github.com/makinde/express-app-server#readme",
   "dependencies": {
     "debug": "4.1.0",
     "express-force-ssl": "0.3.2",
