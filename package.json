@@ -26,6 +26,7 @@
     "engine-strict": "1.0.0",
     "express-force-ssl": "0.3.2",
     "http": "0.0.0",
+    "minimist": "1.2.0",
     "morgan": "1.9.1"
   },
   "devDependencies": {

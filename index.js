@@ -8,10 +8,12 @@ const forceSSL = require('express-force-ssl');
 const http = require('http');
 const debug = require('debug')('express-runner');
 const path = require('path');
+const minimist = require('minimist');
 
 // Determine where to get the express app from
 const currentDir = process.cwd();
-const customPath = process.argv[2] || '';
+const args = minimist(process.argv.slice(2));
+const customPath = args.path || '';
 const appPath = path.join(currentDir, customPath);
 const app = require(appPath);
 
