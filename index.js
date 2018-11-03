@@ -4,7 +4,13 @@ const logger = require('morgan');
 const forceSSL = require('express-force-ssl');
 const http = require('http');
 const debug = require('debug')('express-runner');
-const app = require('./');
+const path = require('path');
+
+// Determine where to get the express app from
+const currentDir = process.cwd();
+const customPath = process.argv[2] || '';
+const appPath = path.join(currentDir, customPath);
+const app = require(appPath);
 
 const isProd = process.env.NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10) || 4000;
