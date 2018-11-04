@@ -4,7 +4,7 @@ require('engine-strict').check(); // Check node version ASAP
 require('dotenv').load(); // and get the environment set up
 
 const logger = require('morgan');
-const forceSSL = require('express-force-ssl');
+const expressEnforcesSSL = require('express-enforces-ssl');
 const http = require('http');
 const debug = require('debug')('express-runner');
 const path = require('path');
@@ -15,7 +15,7 @@ const currentDir = process.cwd();
 const args = minimist(process.argv.slice(2));
 const customPath = args.path || '';
 const appPath = path.join(currentDir, customPath);
-const app = require(appPath);
+const app = require(appPath); // eslint-disable-line
 
 const isProd = process.env.NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10) || 4000;
@@ -62,8 +62,8 @@ function onListening() {
 
 app.use(logger('dev'));
 if (isProd) {
-  app.set('forceSSLOptions', { trustXFPHeader: true });
-  app.use(forceSSL);
+  app.enable('trust proxy');
+  app.use(expressEnforcesSSL());
 }
 
 /**
