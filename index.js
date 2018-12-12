@@ -3,6 +3,7 @@
 require('engine-strict').check(); // Check node version ASAP
 require('dotenv').load(); // and get the environment set up
 
+const compression = require('compression');
 const logger = require('morgan');
 const expressEnforcesSSL = require('express-enforces-ssl');
 const http = require('http');
@@ -66,6 +67,7 @@ Promise.resolve(appPromise).then((app) => {
   }
 
   app.use(logger('dev'));
+  app.use(compression());
   if (isProd) {
     app.enable('trust proxy');
     app.use(expressEnforcesSSL());

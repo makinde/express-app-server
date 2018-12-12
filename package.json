@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/makinde/express-app-server#readme",
   "dependencies": {
+    "compression": "1.7.3",
     "debug": "4.1.0",
     "dotenv": "6.1.0",
     "engine-strict": "1.0.0",
