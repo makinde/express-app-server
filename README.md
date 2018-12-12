@@ -1,5 +1,8 @@
 # express-app-server
-A script to start an express app
+A production ready script to start up an express app.
+
+## Motivation
+When building lots of express apps, there's boilerplate around serving the express app. Compressions, Forcing HTTPS, and so forth. This module takes an express app that defines all of the things specific to your application, and servers it via HTTP(S) so you don't have to duplicate all the simple steps every time.
 
 ## Installation
 
@@ -17,6 +20,8 @@ In your `package.json` file, add:
 ```
 
 Now running `npm start` will start an express server with the app exported in the `index.js` file in directory where the command is run.
+
+The index file can also return a promise for an app. This is useful when serving [`next.js` apps with a custom server](https://www.npmjs.com/package/next#custom-server-and-routing).
 
 ## Options
 

@@ -15,63 +15,69 @@ const currentDir = process.cwd();
 const args = minimist(process.argv.slice(2));
 const customPath = args.path || '';
 const appPath = path.join(currentDir, customPath);
-const app = require(appPath); // eslint-disable-line
+const appPromise = require(appPath); // eslint-disable-line
 
 const isProd = process.env.NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10) || 4000;
 
-const server = http.createServer(app);
+// Try to resolve to app, in case it returned a promise of an app instead of
+// an actual express app. This is useful in the dev startup process for
+// next apps. See `app.prepare()` here:
+// https://www.npmjs.com/package/next#custom-server-and-routing
+Promise.resolve(appPromise).then((app) => {
+  const server = http.createServer(app);
 
-/**
+  /**
  * Event listener for HTTP server "error" event.
  */
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  const bind = typeof port === 'string'
-    ? `Pipe ${port}`
-    : `Port ${port}`;
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      debug(`${bind} requires elevated privileges`);
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      debug(`${bind} is already in use`);
-      process.exit(1);
-      break;
-    default:
+  function onError(error) {
+    if (error.syscall !== 'listen') {
       throw error;
-  }
-}
+    }
 
-/**
+    const bind = typeof port === 'string'
+      ? `Pipe ${port}`
+      : `Port ${port}`;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+      case 'EACCES':
+        debug(`${bind} requires elevated privileges`);
+        process.exit(1);
+        break;
+      case 'EADDRINUSE':
+        debug(`${bind} is already in use`);
+        process.exit(1);
+        break;
+      default:
+        throw error;
+    }
+  }
+
+  /**
  * Event listener for HTTP server "listening" event.
  */
-function onListening() {
-  const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? `pipe ${addr}`
-    : `port ${addr.port}`;
-  debug(`Listening on ${bind}`);
-}
+  function onListening() {
+    const addr = server.address();
+    const bind = typeof addr === 'string'
+      ? `pipe ${addr}`
+      : `port ${addr.port}`;
+    debug(`Listening on ${bind}`);
+  }
 
-app.use(logger('dev'));
-if (isProd) {
-  app.enable('trust proxy');
-  app.use(expressEnforcesSSL());
-}
+  app.use(logger('dev'));
+  if (isProd) {
+    app.enable('trust proxy');
+    app.use(expressEnforcesSSL());
+  }
 
-/**
+  /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port, () => {
-  debug('listening');
-  if (process.send) process.send('online'); // for browser refresh
+  server.listen(port, () => {
+    debug('listening');
+    if (process.send) process.send('online'); // for browser refresh
+  });
+  server.on('error', onError);
+  server.on('listening', onListening);
 });
-server.on('error', onError);
-server.on('listening', onListening);
