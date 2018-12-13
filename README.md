@@ -28,5 +28,11 @@ The index file can also return a promise for an app. This is useful when serving
 Pass the path to your express app as the first argument. Example:
 
 ```bash
-npx express-app-server ../apps/app.js
+npx express-app-server --path ../apps/app.js
+```
+
+You can also specify which script to launch by setting the `main` flag in your package.json.
+
+```js
+"main": "../apps/app.js",
 ```
