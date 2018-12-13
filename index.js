@@ -8,7 +8,6 @@ const helmet = require('helmet');
 const logger = require('morgan');
 const expressEnforcesSSL = require('express-enforces-ssl');
 const http = require('http');
-const debug = require('debug')('express-runner');
 const path = require('path');
 const minimist = require('minimist');
 
@@ -44,11 +43,11 @@ Promise.resolve(appPromise).then((app) => {
     // handle specific listen errors with friendly messages
     switch (error.code) {
       case 'EACCES':
-        debug(`${bind} requires elevated privileges`);
+        console.error(`${bind} requires elevated privileges`);
         process.exit(1);
         break;
       case 'EADDRINUSE':
-        debug(`${bind} is already in use`);
+        console.error(`${bind} is already in use`);
         process.exit(1);
         break;
       default:
@@ -64,7 +63,7 @@ Promise.resolve(appPromise).then((app) => {
     const bind = typeof addr === 'string'
       ? `pipe ${addr}`
       : `port ${addr.port}`;
-    debug(`Listening on ${bind}`);
+    console.info(`Listening on ${bind}`);
   }
 
   app.use(
@@ -81,7 +80,6 @@ Promise.resolve(appPromise).then((app) => {
  * Listen on provided port, on all network interfaces.
  */
   server.listen(port, () => {
-    debug('listening');
     if (process.send) process.send('online'); // for browser refresh
   });
   server.on('error', onError);
