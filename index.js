@@ -26,6 +26,16 @@ const port = parseInt(process.env.PORT, 10) || 4000;
 // next apps. See `app.prepare()` here:
 // https://www.npmjs.com/package/next#custom-server-and-routing
 Promise.resolve(appPromise).then((app) => {
+  app.use(
+    logger('dev'),
+    compression(),
+    helmet(),
+  );
+  if (isProd) {
+    app.enable('trust proxy');
+    app.use(expressEnforcesSSL());
+  }
+
   const server = http.createServer(app);
 
   /**
@@ -64,16 +74,6 @@ Promise.resolve(appPromise).then((app) => {
       ? `pipe ${addr}`
       : `port ${addr.port}`;
     console.info(`Listening on ${bind}`);
-  }
-
-  app.use(
-    logger('dev'),
-    compression(),
-    helmet(),
-  );
-  if (isProd) {
-    app.enable('trust proxy');
-    app.use(expressEnforcesSSL());
   }
 
   /**
