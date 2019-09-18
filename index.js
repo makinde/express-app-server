@@ -29,9 +29,9 @@ const port = parseInt(process.env.PORT, 10) || 4000;
 Promise.resolve(appPromise).then((hostedApp) => {
   const masterApp = express();
   masterApp.use(
+    helmet(),
     logger('dev'),
     compression(),
-    helmet(),
   );
   if (isProd) {
     masterApp.enable('trust proxy');
