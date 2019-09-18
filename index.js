@@ -7,6 +7,7 @@ const compression = require('compression');
 const helmet = require('helmet');
 const logger = require('morgan');
 const expressEnforcesSSL = require('express-enforces-ssl');
+const express = require('express');
 const http = require('http');
 const path = require('path');
 const minimist = require('minimist');
@@ -25,18 +26,20 @@ const port = parseInt(process.env.PORT, 10) || 4000;
 // an actual express app. This is useful in the dev startup process for
 // next apps. See `app.prepare()` here:
 // https://www.npmjs.com/package/next#custom-server-and-routing
-Promise.resolve(appPromise).then((app) => {
-  app.use(
+Promise.resolve(appPromise).then((hostedApp) => {
+  const masterApp = express();
+  masterApp.use(
     logger('dev'),
     compression(),
     helmet(),
   );
   if (isProd) {
-    app.enable('trust proxy');
-    app.use(expressEnforcesSSL());
+    masterApp.enable('trust proxy');
+    masterApp.use(expressEnforcesSSL());
   }
+  masterApp.use(hostedApp);
 
-  const server = http.createServer(app);
+  const server = http.createServer(masterApp);
 
   /**
  * Event listener for HTTP server "error" event.
