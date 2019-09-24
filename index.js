@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+if (process.env.NODE_ENV === 'production' && process.env.GCLOUD_PROJECT) {
+  // eslint-disable-next-line global-require
+  require('@google-cloud/trace-agent').start();
+}
 
 require('engine-strict').check(); // Check node version ASAP
 require('dotenv').load(); // and get the environment set up
