@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 if (process.env.NODE_ENV === 'production' && process.env.GCLOUD_PROJECT) {
+  const traceConfig = {};
+  if (process.env.GCLOUD_TRACE_KEY) {
+    traceConfig.key = process.env.GCLOUD_TRACE_KEY;
+  }
   // eslint-disable-next-line global-require
-  require('@google-cloud/trace-agent').start();
+  require('@google-cloud/trace-agent').start(traceConfig);
 }
 
 require('engine-strict').check(); // Check node version ASAP
