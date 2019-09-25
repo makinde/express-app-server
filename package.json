@@ -1,6 +1,6 @@
 {
   "name": "express-app-server",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "description": "A script to serve an express app",
   "bin": {
     "express-app-server": "index.js"
