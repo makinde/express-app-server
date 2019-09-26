@@ -28,7 +28,7 @@ The index file can also return a promise for an app. This is useful when serving
 Pass the path to your express app as the "--app" argument. You can also specify an init script that will run before any other code. This is useful for instrumentation. Example:
 
 ```bash
-node express-app-server --app ../apps/app.js --init setupMonitoring.js
+node ./node_modules/express-app-server --app ../apps/app.js --init setupMonitoring.js
 ```
 
 You can also specify which script to launch by setting the `main` flag in your package.json.
