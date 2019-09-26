@@ -1,16 +1,3 @@
-#!/usr/bin/env node
-if (process.env.NODE_ENV === 'production' && process.env.GCLOUD_PROJECT) {
-  const traceConfig = {};
-  if (process.env.GCLOUD_TRACE_CREDENTIALS) {
-    traceConfig.credentials = JSON.parse(process.env.GCLOUD_TRACE_CREDENTIALS);
-  }
-
-  // eslint-disable-next-line global-require
-  require('@google-cloud/trace-agent').start(traceConfig);
-  // eslint-disable-next-line global-require
-  require('@google-cloud/profiler').start(traceConfig);
-}
-
 require('engine-strict').check(); // Check node version ASAP
 require('dotenv').load(); // and get the environment set up
 
@@ -21,13 +8,22 @@ const expressEnforcesSSL = require('express-enforces-ssl');
 const express = require('express');
 const http = require('http');
 const path = require('path');
-const minimist = require('minimist');
+const program = require('commander');
 
-// Determine where to get the express app from
+// Determine where to get the express app and initialization script from
 const currentDir = process.cwd();
-const args = minimist(process.argv.slice(2));
-const customPath = args.path || '';
-const appPath = path.join(currentDir, customPath);
+program
+  .option('-i, -init <initScript>', 'Initialization script')
+  .option('-app <appScript>', 'Script to provide the app to serve', '');
+program.parse(process.argv);
+
+if (program.init) {
+  const initPath = path.join(currentDir, program.init);
+  const initFunc = require(initPath); // eslint-disable-line
+  initFunc();
+}
+
+const appPath = path.join(currentDir, program.app);
 const appPromise = require(appPath); // eslint-disable-line
 
 const isProd = process.env.NODE_ENV === 'production';

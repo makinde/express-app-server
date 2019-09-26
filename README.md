@@ -15,7 +15,7 @@ npm i express-app-server
 In your `package.json` file, add:
 ```
 "scripts" : {
-  "start": "express-app-server"
+  "start": "node express-app-server"
 }
 ```
 
@@ -25,10 +25,10 @@ The index file can also return a promise for an app. This is useful when serving
 
 ## Options
 
-Pass the path to your express app as the first argument. Example:
+Pass the path to your express app as the "--app" argument. You can also specify an init script that will run before any other code. This is useful for instrumentation. Example:
 
 ```bash
-npx express-app-server --path ../apps/app.js
+node express-app-server --app ../apps/app.js --init setupMonitoring.js
 ```
 
 You can also specify which script to launch by setting the `main` flag in your package.json.
