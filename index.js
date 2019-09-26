@@ -13,14 +13,13 @@ const program = require('commander');
 // Determine where to get the express app and initialization script from
 const currentDir = process.cwd();
 program
-  .option('-i, -init <initScript>', 'Initialization script')
-  .option('-app <appScript>', 'Script to provide the app to serve', '');
+  .option('-i, --init <initScript>', 'Initialization script')
+  .option('--app <appScript>', 'Script to provide the app to serve', '');
 program.parse(process.argv);
 
 if (program.init) {
   const initPath = path.join(currentDir, program.init);
-  const initFunc = require(initPath); // eslint-disable-line
-  initFunc();
+  require(initPath); // eslint-disable-line
 }
 
 const appPath = path.join(currentDir, program.app);
