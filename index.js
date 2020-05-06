@@ -1,16 +1,12 @@
 require('engine-strict').check(); // Check node version ASAP
 require('dotenv').load(); // and get the environment set up
 
-const compression = require('compression');
-const helmet = require('helmet');
-const logger = require('morgan');
-const expressEnforcesSSL = require('express-enforces-ssl');
-const express = require('express');
-const http = require('http');
+// Determine where to get the express app and initialization script from
+// Do this before any includes so that the init script has a chance to
+// instrument the includes if it wants
 const path = require('path');
 const program = require('commander');
 
-// Determine where to get the express app and initialization script from
 const currentDir = process.cwd();
 program
   .option('-i, --init <initScript>', 'Initialization script')
@@ -21,6 +17,13 @@ if (program.init) {
   const initPath = path.join(currentDir, program.init);
   require(initPath); // eslint-disable-line
 }
+
+const compression = require('compression');
+const helmet = require('helmet');
+const logger = require('morgan');
+const expressEnforcesSSL = require('express-enforces-ssl');
+const express = require('express');
+const http = require('http');
 
 const appPath = path.join(currentDir, program.app);
 const appPromise = require(appPath); // eslint-disable-line
